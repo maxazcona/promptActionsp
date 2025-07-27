@@ -1,0 +1,94 @@
+openapi: 3.1.0
+info:
+  title: Prompt Architect Actions
+  description: Custom actions to evaluate, refine, and match prompts based on task type and best practices.
+  version: 1.0.0
+servers:
+  - url: https://api.promptarchitect.dev # Replace with your API server URL if needed
+
+paths:
+  /evaluate:
+    post:
+      operationId: evaluatePrompt
+      summary: Evaluate a prompt for clarity and structure.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                output:
+                  type: string
+                taskType:
+                  type: string
+                  enum: [generation, classification, extraction, reasoning]
+      responses:
+        '200':
+          description: Evaluation report
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  score:
+                    type: number
+                  suggestions:
+                    type: array
+                    items:
+                      type: string
+
+  /refine:
+    post:
+      operationId: refinePrompt
+      summary: Suggest improved prompt variants using selected techniques.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                originalPrompt:
+                  type: string
+                techniques:
+                  type: array
+                  items:
+                    type: string
+                    enum: [zero-shot, few-shot, chain-of-thought, self-consistency, RAG, meta-prompting]
+      responses:
+        '200':
+          description: Refined prompts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+
+  /match:
+    post:
+      operationId: matchPromptStructure
+      summary: Recommend a prompt template based on task and user level.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                taskType:
+                  type: string
+                  enum: [summarization, classification, reasoning, coding, extraction, generation]
+                userLevel:
+                  type: string
+                  enum: [beginner, intermediate, expert]
+      responses:
+        '200':
+          description: Matched prompt structure
+          content:
+            application/json:
+              schema:
+                type: string
